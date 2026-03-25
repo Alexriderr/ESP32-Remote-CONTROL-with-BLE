@@ -44,12 +44,12 @@ char Pantalla[51] = "Hola amor!"; // Variable para mostrar en la interfaz
 
 #include <RemoteXY.h>
 
-// Interfaz de usuario cogia actualizada
+// Interfaz de usuario cogia 
 #pragma pack(push, 1)  
 uint8_t const PROGMEM RemoteXY_CONF_PROGMEM[] =   // 239 bytes V19 
   { 255,9,0,51,0,232,0,19,0,0,0,72,97,114,100,32,116,101,97,109,
   0,24,2,106,200,200,84,2,1,0,2,0,5,19,64,58,58,29,17,41,
-  41,0,2,26,31,131,8,6,22,17,133,30,39,13,2,17,2,31,82,101,
+  41,32,2,26,31,131,8,6,22,17,133,30,39,13,2,17,2,31,82,101,
   99,111,114,100,101,114,32,109,111,100,101,0,6,9,0,1,23,48,33,33,
   25,6,16,16,0,2,31,85,112,0,1,1,83,28,28,6,25,16,16,0,
   2,31,76,101,102,116,0,1,24,116,31,31,24,44,17,17,0,2,31,68,
@@ -79,7 +79,6 @@ struct {
   uint8_t connect_flag;  // =1 if wire connected, else =0
 } RemoteXY;   
 #pragma pack(pop)
-
 //Variable del mensaje en pantalla
 unsigned long tiempo_violao = 0;
 
