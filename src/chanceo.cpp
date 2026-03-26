@@ -198,7 +198,7 @@ void loop() {
 
   if (Serial2.available() > 0) {
     
-    // Obtencion del Estado  (Buscamos F, B, L, R)
+    // Obtencion del Estado  (Se busca F, B, L, R)
     if (estado_guardado == '\0') {
       char letra = Serial2.read();
       
