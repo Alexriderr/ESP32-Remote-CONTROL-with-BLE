@@ -17,10 +17,10 @@ El flujo de comunicación es bidireccional y funciona de la siguiente manera:
 ## ✨ Características y Modos de Operación
 
 El sistema se controla mediante la app de RemoteXY (vía BLE) y cuenta con los siguientes modos:
-1. **🕹️ Modo 0 (Joystick):** Control analógico proporcional de Avance y Giro.
-2. **➕ Modo 1 (D-PAD):** Control digital de movimientos precisos. Incluye la activación del sistema de grabación de rutas (Dua Lipa Mode 🎤).
-3. **🔄 Modo 2 (Replay):** Reproducción de secuencias guardadas en la EEPROM.
-4. **❔ Modo 3:** [Espacio para futura expansión del Team Hard].
+1. **🕹️ Modo 1 (Joystick):** Control analógico proporcional de Avance y Giro.
+2. **➕ Modo 2 (D-PAD):** Control digital de movimientos precisos. Incluye la activación del sistema de grabación de rutas (Dua Lipa Mode 🎤).
+3. **🔄 Modo 3 (Replay):** Reproducción de secuencias guardadas en la EEPROM.
+
 
 Adicionalmente, cuenta con feedback visual a través de un **LED NeoPixel** que indica el estado de la conexión y el modo activo.
 
