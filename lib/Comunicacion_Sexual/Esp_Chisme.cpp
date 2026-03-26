@@ -12,15 +12,15 @@ void Esp_Chisme::onDataSent(const uint8_t *mac_addr, esp_now_send_status_t statu
   
   if (status == ESP_NOW_SEND_SUCCESS) {
     Serial.println("ENTREGADO ✅");
-    pixels.setPixelColor(0, pixels.Color(0, 255, 0)); // Verde si llegó bien
+  //  pixels.setPixelColor(0, pixels.Color(0, 255, 0)); // Verde si llegó bien
     
     sprintf(Pantalla, "Enviado>%s ✅", ultimo_chisme_enviado); 
   } else {
     Serial.println("PERDIDO ❌");
-    pixels.setPixelColor(0, pixels.Color(255, 0, 0)); // Rojo si no encontró al carro
+    // pixels.setPixelColor(0, pixels.Color(255, 0, 0)); // Rojo si no encontró al carro
     sprintf(Pantalla, "Fallo>%s ❌", ultimo_chisme_enviado); 
   }
-  pixels.show();
+//  pixels.show();
 }
 
 // Oreja parada pal chisme (Recibe del ESP2)
@@ -42,17 +42,24 @@ void Esp_Chisme::OjoPelao(const uint8_t * mac, const uint8_t *datosNuevos, int l
     
     Serial.printf("➡️ Desempaquetado exitoso -> Estado: %c | Tiempo: %d\n", estado, tiempo);
     
-   // Escupir al PIC 😏
-    Serial2.write(estado); // Envio de la letra 
-    Serial2.write(tiempo); // Envio de el tiempo
+    // 🔥 AQUÍ ESTÁ EL FILTRO MÁGICO 🔥
+    if (estado == 'S') {
+      // Si el estado es 'S', simplemente imprimimos un aviso y NO hacemos los Serial2.write
+      Serial.println("🛑 Los otros cogios mandaron una 'S'. Trama IGNORADA 🚫");
+    } else {
+      // Si es cualquier otra letra (F, B, L, R), la inyectamos normal al PIC
+      Serial2.write(estado); // Mandamos la letra pura
+      delay(10); // Pequeña pausa para asegurar que el PIC procese la letra antes del tiempo
+      Serial2.write(tiempo); // Mandamos el tiempo Serial2.write(estado); // Mandamos la letra pura
+      Serial.println("✅ Orden inyectada al PIC por UART");
+    }
     
-    Serial.println("✅ Orden inyectada al PIC por UART");
   } else {
     Serial.println("❌ Error: Trama corrupta, no se enviará al PIC.");
   }
   Serial.println("========================================\n");
 
-  // Actualiza la pantalla global 
+  // Actualiza la pantalla global |
   sprintf(Pantalla, "Recibido>%s", trama);
 }
 
@@ -95,7 +102,7 @@ void Esp_Chisme::EnviarTrama(char estado, int tiempo) {
   sprintf(trama_texto, "[%c,%d]", estado, tiempo);
   
   strcpy(ultimo_chisme_enviado, trama_texto);
-  sprintf(Pantalla, "Enviando>%s", trama_texto);
+ 
   
   //  ENVÍO DE LA TRAMA
   esp_err_t resultado = esp_now_send(_mac_esclavo, (uint8_t *) trama_texto, strlen(trama_texto) + 1);
@@ -105,6 +112,7 @@ void Esp_Chisme::EnviarTrama(char estado, int tiempo) {
     Serial.println("⚠️ Error enviando trama por ESP-NOW");
     sprintf(Pantalla, "Fallo>%s ⚠️", trama_texto); 
   }
+  sprintf(Pantalla, "Enviando>%s", trama_texto);
 }
 
 // --- Apagar el módulo  ---

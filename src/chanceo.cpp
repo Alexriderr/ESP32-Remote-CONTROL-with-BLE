@@ -33,7 +33,7 @@ int potenciaAvance = 127;
 int potenciaGiro   = 127; 
 int valorX = 0;
 int valorY = 0;
-char Pantalla[51] = "Hola amor!"; // Variable para mostrar en la interfaz
+char Pantalla[51] = "Bienvemidos a Venezuela"; // Variable para mostrar en la interfaz
 
 
 // 🔥 INTERFAZ COGIA POR BLE (Bluetooth Low Energy) 🔥
@@ -86,13 +86,13 @@ unsigned long tiempo_violao = 0;
 Adafruit_NeoPixel pixels(NUMPIXELS, LED, NEO_GRB + NEO_KHZ800);
 
 //Creacion de objetos
- uint8_t mac[] = {0x00, 0x4B, 0x12, 0x33, 0x98, 0xFC}; //MAC PRUEBAS
- // uint8_t mac[] = {0x90, 0x70, 0x69, 0x18, 0x9B, 0x40}; //MAC del  Pajuo de Jesus
+ // uint8_t mac[] = {0x00, 0x4B, 0x12, 0x33, 0x98, 0xFC}; //MAC PRUEBAS
+ uint8_t mac[] = {0x90, 0x70, 0x69, 0x18, 0x9B, 0x40}; //MAC del  Pajuo de Jesus
 FrenoSexual Freno;
 Esp_Chisme Chisme(mac); 
 
 void setup() {
- setCpuFrequencyMhz(80); 
+setCpuFrequencyMhz(80); 
   
   Serial.begin(115200);
   Serial2.begin(9600, SERIAL_8N1, Rx_Pic, Tx_Pic); // Configura el puerto serial para el pic
