@@ -5,6 +5,7 @@ Este repositorio contiene el código fuente del control remoto y el sistema de t
 ## 🧠 Arquitectura del Sistema
 
 El flujo de comunicación es bidireccional y funciona de la siguiente manera:
+
 `Celular (RemoteXY) <-> ESP1 <-> PIC1<-> ESP1  =======(ESP-NOW)======= ESP2 <-> PIC2`
 
 ### Componentes Principales:
