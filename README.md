@@ -4,8 +4,8 @@ Este repositorio contiene el código fuente del control remoto y el sistema de t
 
 ## 🧠 Arquitectura del Sistema
 
-El flujo de comunicación es bidireccional (Modo Espejo) y funciona de la siguiente manera:
-`Celular (RemoteXY) <-> ESP1 (Master) <-> PIC1 =======(ESP-NOW)======= ESP2 (Carro) <-> PIC2`
+El flujo de comunicación es bidireccional y funciona de la siguiente manera:
+`Celular (RemoteXY) <-> ESP1 <-> PIC1<-> ESP1  =======(ESP-NOW)======= ESP2 <-> PIC2`
 
 ### Componentes Principales:
 * **ESP1 (Master / Control Remoto):** Se conecta por Bluetooth al celular usando la interfaz de **RemoteXY**. Traduce las órdenes del usuario y las envía físicamente al PIC1. También escucha al PIC1 y dispara las tramas por ESP-NOW.
