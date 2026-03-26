@@ -226,7 +226,7 @@ void loop() {
         Chisme.EnviarTrama(estado_guardado, tiempo_crudo); 
         tiempo_pantalla = millis();
         Serial.printf("🚀 Reenviando al Carro: [%c,%d]\n", estado_guardado, tiempo_crudo);
-        sprintf(Pantalla, "Enviado>%c,%d", estado_guardado, tiempo_crudo);
+        sprintf(Pantalla, "Enviado>[%c,%d]", estado_guardado, tiempo_crudo);
       } else {
         Serial.println("💤 Trama limpiada del buffer (El ESP-NOW está apagado)");
       }
