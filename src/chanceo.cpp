@@ -34,6 +34,10 @@ int potenciaGiro   = 127;
 int valorX = 0;
 int valorY = 0;
 char Pantalla[51] = "Bienvemidos a Venezuela"; // Variable para mostrar en la interfaz
+static unsigned long marca_tiempo_pic = 0;
+unsigned long tiempo_violao = 0;
+static unsigned long ultimo_menudeo = 0;
+unsigned long tiempo_pantalla=0;
 
 
 // 🔥 INTERFAZ COGIA POR BLE (Bluetooth Low Energy) 🔥
@@ -79,8 +83,7 @@ struct {
   uint8_t connect_flag;  // =1 if wire connected, else =0
 } RemoteXY;   
 #pragma pack(pop)
-//Variable del mensaje en pantalla
-unsigned long tiempo_violao = 0;
+
 
 //CONFIGURACION NEOPIXEL
 Adafruit_NeoPixel pixels(NUMPIXELS, LED, NEO_GRB + NEO_KHZ800);
@@ -133,8 +136,10 @@ void loop() {
   digitalWrite(DuaLipa, LOW);
   potenciaAvance = 127;
   potenciaGiro = 127;
+  valorX = 0;
+  valorY = 0;
 
-  // 🕹️ MODO 0: CONTROL POR JOYSTICK ANALÓGICO
+  // 🕹️ MODO 1: CONTROL POR JOYSTICK ANALÓGICO
   if (RemoteXY.Modos == 0) {
     digitalWrite(Manual, HIGH);
     if (culo == 1) pixels.setPixelColor(0, pixels.Color(255, 69, 0)); 
@@ -143,7 +148,7 @@ void loop() {
     potenciaAvance = map(valorY, -100, 100, 0, 255); 
     potenciaGiro   = map(valorX, -100, 100, 0, 255); 
   } 
-  // ➕ MODO 1: CONTROL DIGITAL POR D-PAD
+  // ➕ MODO 2: CONTROL DIGITAL POR D-PAD
   else if (RemoteXY.Modos == 1) {
     digitalWrite(Record, HIGH);
     if (RemoteXY.grabacion == 1){ 
@@ -151,31 +156,30 @@ void loop() {
       strcpy(Pantalla, "GRABANDO MODO DUA LIPA 🎤");
     }
     else if (RemoteXY.grabacion == 0){
-       digitalWrite(DuaLipa, LOW);
-       strcpy(Pantalla, "MODO D-PAD");
+       digitalWrite(DuaLipa, LOW); 
     }
     if (culo == 1) pixels.setPixelColor(0, pixels.Color(0, 0, 50));
     if (RemoteXY.up == 1) { potenciaAvance = 255; valorY = 100; } 
     else if (RemoteXY.down == 1) { potenciaAvance = 0; valorY = -100; }
     if (RemoteXY.right == 1) { potenciaGiro = 255; valorX = 100; } 
     else if (RemoteXY.left == 1) { potenciaGiro = 0; valorX = -100; }
+    if (millis() - tiempo_pantalla >= 2000) {
+      tiempo_pantalla= millis();
+      sprintf(Pantalla, "D-PAD || X: %d | Y: %d", valorX, valorY);
+    }
   }
-  // 🔄 MODO 2: REPLAY
+  // 🔄 MODO 3: REPLAY
   else if (RemoteXY.Modos == 2) {
     digitalWrite(Replay, HIGH);
     if (culo == 1) pixels.setPixelColor(0, pixels.Color(250, 0, 0)); 
   }
-  // ❔ MODO 3: EL NUEVO ESTADO DE TU INTERFAZ
-  else if (RemoteXY.Modos == 3) {
-      // Aquí metes la lógica de lo que sea que quieras que haga en la 4ta posición
-  }
-
+  
   // Envio de ordenes físicas al PIC1
   ledcWrite(1, constrain(potenciaAvance, 0, 255));
   ledcWrite(0, constrain(potenciaGiro, 0, 255));
 
   // ⚡ Modulo de Comunicación Sexual ESP-NOW ⚡
-  static unsigned long ultimo_menudeo = 0;
+  
   if (RemoteXY.ActivoMenudeo != ultimo_menudeo){
     if(RemoteXY.ActivoMenudeo == 1){
       Chisme.inicio();
@@ -194,7 +198,7 @@ void loop() {
   // =============================================================
   
   static char estado_guardado = '\0'; 
-  static unsigned long marca_tiempo_pic = 0;
+  
 
   if (Serial2.available() > 0) {
     
@@ -220,7 +224,9 @@ void loop() {
       // Se envia solo si el menudeo está activo
       if (RemoteXY.ActivoMenudeo == 1) {
         Chisme.EnviarTrama(estado_guardado, tiempo_crudo); 
+        tiempo_pantalla = millis();
         Serial.printf("🚀 Reenviando al Carro: [%c,%d]\n", estado_guardado, tiempo_crudo);
+        sprintf(Pantalla, "Enviado>%c,%d", estado_guardado, tiempo_crudo);
       } else {
         Serial.println("💤 Trama limpiada del buffer (El ESP-NOW está apagado)");
       }

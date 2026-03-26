@@ -41,16 +41,14 @@ void Esp_Chisme::OjoPelao(const uint8_t * mac, const uint8_t *datosNuevos, int l
     uint8_t tiempo = tramaStr.substring(tramaStr.indexOf(',') + 1, tramaStr.length() - 1).toInt();
     
     Serial.printf("➡️ Desempaquetado exitoso -> Estado: %c | Tiempo: %d\n", estado, tiempo);
-    
-    // 🔥 AQUÍ ESTÁ EL FILTRO MÁGICO 🔥
     if (estado == 'S') {
-      // Si el estado es 'S', simplemente imprimimos un aviso y NO hacemos los Serial2.write
+      // Si el estado es 'S', no se envia al PIC y se ignora la trama
       Serial.println("🛑 Los otros cogios mandaron una 'S'. Trama IGNORADA 🚫");
     } else {
       // Si es cualquier otra letra (F, B, L, R), la inyectamos normal al PIC
-      Serial2.write(estado); // Mandamos la letra pura
-      delay(10); // Pequeña pausa para asegurar que el PIC procese la letra antes del tiempo
-      Serial2.write(tiempo); // Mandamos el tiempo Serial2.write(estado); // Mandamos la letra pura
+      Serial2.write(estado);
+      delay(10); // Pequeña pausa para asegurar que el PIC procese la letra 
+      Serial2.write(tiempo);  
       Serial.println("✅ Orden inyectada al PIC por UART");
     }
     
